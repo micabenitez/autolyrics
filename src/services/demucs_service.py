@@ -5,7 +5,7 @@ from config import DEMUCS_MODEL, TEMP_DIR, VOCALS_FILENAME
 from models.song import Song
 
 
-def isolate_voice(song: Song) -> Path:
+def isolate_voice(song: Song):
 
     TEMP_DIR.mkdir(exist_ok=True)
 
@@ -20,22 +20,18 @@ def isolate_voice(song: Song) -> Path:
         str(song.path)
     ]
 
-    print(f"\n separando voz de {song.path.name}")
+    print(f"\n separando voz: {song.path.name}")
 
     subprocess.run(command, check=True)
 
     vocals_path = (
         TEMP_DIR
         / DEMUCS_MODEL
-        / song.path.stem
+        / song.name
         / VOCALS_FILENAME
     )
 
     if not vocals_path.exists():
-        raise FileNotFoundError(
-            f"No se encontró {vocals_path}"
-        )
+        raise FileNotFoundError(vocals_path)
 
     song.vocals_path = vocals_path
-
-    return vocals_path

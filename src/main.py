@@ -1,4 +1,4 @@
-from services.demucs_service import isolate_voice
+from services.pipeline_service import PipelineService
 from utils.file_utils import load_songs
 
 
@@ -7,22 +7,18 @@ def main():
     songs = load_songs()
 
     if not songs:
-        print("No se encontraron canciones.")
+        print("No hay canciones.")
         return
 
-    print(f"Se encontraron {len(songs)} canciones\n")
+    pipeline = PipelineService()
 
-    for index, song in enumerate(songs, start=1):
-        print(f"{index}. {song.path.name}")
+    for song in songs:
 
-    first_song = songs[0]
+        print(f"Procesando {song.name}")
 
-    print(f"\nProcesando {first_song.name}")
+        pipeline.process(song)
 
-    vocals = isolate_voice(first_song)
-    
-    print(f"\nVoz guardada en:")
-    print(vocals)
+        print(f" {song.srt_path}")
 
 
 if __name__ == "__main__":
