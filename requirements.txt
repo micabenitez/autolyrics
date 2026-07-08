@@ -1,0 +1,9 @@
+﻿demucs>=4.0.0
+faster-whisper>=1.0.0
+ctranslate2>=4.0.0
+
+torch
+torchaudio
+
+ffmpeg-python>=0.2.0
+PySide6>=6.5.0
