@@ -11,10 +11,18 @@ class PipelineService:
 
         self.whisper = WhisperService()
 
-    def process(self, song: Song):
-
+    def process(self, song: Song, callback=None):
+        if callback:
+            callback(f"Separando voz...")
         isolate_voice(song)
-
+        
+        if callback:
+            callback(f"Transcribiendo...")
         self.whisper.transcribe(song)
 
+        if callback:
+            callback(f"Exportando...")
         export_srt(song)
+        
+        if callback:
+            callback(f"Finalizado.")

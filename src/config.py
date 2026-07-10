@@ -14,6 +14,6 @@ SUPPORTED_EXTENSIONS = {
     ".m4a"
 }
 
-DEMUCS_MODEL = "mdx_extra"
-WHISPER_MODEL = "small"
+DEMUCS_MODEL = "htdemucs"
+WHISPER_MODEL = "tiny"
 VOCALS_FILENAME = "vocals.wav"
