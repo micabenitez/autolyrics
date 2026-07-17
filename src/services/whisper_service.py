@@ -2,6 +2,7 @@ from faster_whisper import WhisperModel
 
 from config import WHISPER_MODEL
 from models.song import Song
+from models.subtitle import Subtitle
 
 
 class WhisperService:
@@ -21,7 +22,16 @@ class WhisperService:
             beam_size=5,
             vad_filter=True
         )
+        
+        song.subtitles = []
 
-        song.language = info.language
-        song.language_probability = info.language_probability
-        song.segments = list(segments)
+        for index, segment in enumerate(segments, start=1):
+            
+            subtitle = Subtitle(
+                index=index,
+                start=segment.start,
+                end=segment.end,
+                text=segment.text.strip()
+            )
+
+            song.subtitles.append(subtitle)

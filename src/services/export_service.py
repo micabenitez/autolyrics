@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from config import OUTPUT_DIR
 from models.song import Song
 
@@ -25,16 +23,16 @@ def export_srt(song: Song):
 
     with output_file.open("w", encoding="utf-8") as file:
 
-        for index, segment in enumerate(song.segments, start=1):
+        for subtitle in song.subtitles:
 
-            file.write(f"{index}\n")
+            file.write(f"{subtitle.index}\n")
 
             file.write(
-                f"{format_timestamp(segment.start)} --> "
-                f"{format_timestamp(segment.end)}\n"
+                f"{format_timestamp(subtitle.start)} --> "
+                f"{format_timestamp(subtitle.end)}\n"
             )
 
-            file.write(segment.text.strip())
+            file.write(subtitle.text.strip())
 
             file.write("\n\n")
 

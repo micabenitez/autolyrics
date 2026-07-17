@@ -1,12 +1,12 @@
 from PySide6.QtCore import QObject, Signal, Slot
-
 from services.pipeline_service import PipelineService
 
 
 class ProcessingWorker(QObject):
     finished = Signal()
-    progress = Signal(int)
-    status = Signal(str)
+    status = Signal(object, str)
+    song_progress = Signal(object, int)
+    global_progress = Signal(int)
     error = Signal(str)
 
     def __init__(self, songs):
@@ -22,12 +22,20 @@ class ProcessingWorker(QObject):
         for index, song in enumerate(self.songs, start=1):
             try:
                 self.status.emit(
+                    song,
                     f"Procesando {song.name}"
                 )
 
-                self.pipeline.process(song, callback=self.status.emit)
+                self.pipeline.process(
+                    song,
+                     callback=lambda status, progress: (
+                        self.status.emit(song, status),
+                        self.song_progress.emit(song, progress)
+                    )
+                )
                 percentage = int(index / total * 100)
-                self.progress.emit(percentage)
+                self.song_progress.emit(song, 100)
+                self.global_progress.emit(percentage)
                 
             except Exception as e:
                 self.error.emit(str(e))

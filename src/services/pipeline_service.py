@@ -8,21 +8,24 @@ from services.export_service import export_srt
 class PipelineService:
 
     def __init__(self):
-
         self.whisper = WhisperService()
-
-    def process(self, song: Song, callback=None):
-        if callback:
-            callback(f"Separando voz...")
-        isolate_voice(song)
         
+    def process(self, song: Song, callback=None):
+
         if callback:
-            callback(f"Transcribiendo...")
+            callback("Separando voz...", 20)
+
+        isolate_voice(song)
+
+        if callback:
+            callback("Transcribiendo...", 60)
+
         self.whisper.transcribe(song)
 
         if callback:
-            callback(f"Exportando...")
+            callback("Exportando...", 90)
+
         export_srt(song)
-        
+
         if callback:
-            callback(f"Finalizado.")
+            callback("Finalizado.", 100)
